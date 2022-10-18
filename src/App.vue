@@ -1,9 +1,15 @@
 <template>
   <div id="app">
     <RouterView></RouterView>
+    <FooterPlay></FooterPlay>
   </div>
 </template>
-
+<script>
+import FooterPlay from '@/components/play/FooterPlay.vue';
+export default {
+  components: { FooterPlay },
+};
+</script>
 <style lang="less">
 * {
   margin: 0;
@@ -20,9 +26,24 @@ a {
   text-decoration: none;
   color: #333;
 }
+.show-1row-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-clamp: 1;
+}
+.show-2row-text {
+  text-overflow: -o-ellipsis-lastline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
 .icon {
-  width: 0.5em;
-  height: 0.5em;
+  width: 1.7em;
+  height: 1.7em;
   vertical-align: -0.15em;
   fill: currentColor;
   overflow: hidden;
@@ -30,10 +51,13 @@ a {
 .clear-both::after,
 .clear-both::before {
   display: table;
-  content: "";
+  content: '';
 }
 
 .clear-both::after {
   clear: both;
+}
+body {
+  min-width: 320px;
 }
 </style>
