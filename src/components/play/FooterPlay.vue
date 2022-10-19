@@ -1,17 +1,31 @@
 <template>
   <div class="footer-play">
     <div class="fp-con">
-      <div class="fp-left">
+      <div @click="showDetailPage" class="fp-left">
         <div class="fp-img">
-          <img v-if="playList[playIndex].id !== 0" :src="playList[playIndex].id !== 0 ? playList[playIndex].al.picUrl : 'https://p1.music.126.net/kekg-DZw8y88nwhV8DUm8Q==/109951163540109251.jpg'" alt="" />
+          <img
+            v-if="playList[playIndex].id !== 0"
+            :src="
+              playList[playIndex].id !== 0
+                ? playList[playIndex].al.picUrl
+                : 'https://p1.music.126.net/kekg-DZw8y88nwhV8DUm8Q==/109951163540109251.jpg'
+            "
+            alt=""
+          />
           <svg v-else class="icon" aria-hidden="true">
             <use xlink:href="#icon-yinle"></use>
           </svg>
         </div>
         <div class="fp-info">
-          <div class="fpi-name">{{ playList[playIndex].id !== 0 ? playList[playIndex].name : '未知歌曲' }}</div>
+          <div class="fpi-name">
+            {{ playList[playIndex].id !== 0 ? playList[playIndex].name : '未知歌曲' }}
+          </div>
 
-          <div class="fpi-auther">&nbsp;-&nbsp;{{ playList[playIndex].id !== 0 ? playList[playIndex].ar[0].name : '未知作家' }}</div>
+          <div class="fpi-auther">
+            &nbsp;-&nbsp;{{
+              playList[playIndex].id !== 0 ? playList[playIndex].ar[0].name : '未知作家'
+            }}
+          </div>
         </div>
       </div>
       <div class="fp-icon">
@@ -31,8 +45,16 @@
           </svg>
         </div>
       </div>
-      <audio @ended="playNext" autoplay ref="audio" :src="playList[playIndex].id !== 0 ? `https://music.163.com/song/media/outer/url?id=${playList[playIndex].id}.mp3` : ''"></audio>
-      <van-overlay :show="show" />
+      <audio
+        @ended="playNext"
+        autoplay
+        ref="audio"
+        :src="
+          playList[playIndex].id !== 0
+            ? `https://music.163.com/song/media/outer/url?id=${playList[playIndex].id}.mp3`
+            : ''
+        "
+      ></audio>
       <!-- <audio ref="audio" controls src="https://music.163.com/song/media/outer/url?id=1868206871.mp3"></audio> -->
       <!-- <audio controls ref="audio" src="https://hwaphon.github.io/HTML5MusicPlayer/raw/fly.ogg"></audio> -->
     </div>
@@ -42,35 +64,42 @@
 import { mapState } from 'vuex';
 export default {
   data() {
-    return {
-      show: false
-    }
+    return {};
   },
   computed: {
-    ...mapState(['playList', 'playIndex', 'isPlay']),
-    // ...mapMutations(['setIsPlay']),
+    ...mapState(['playList', 'playIndex', 'isPlay', 'detailPageShow']),
   },
-  // watch: {
-  //   isPlay(val, oldVal) {
-  //     if (val === false) {
-  //       this.$refs.audio.play();
-  //     }
-  //   },
-  // },
+  watch: {
+    isPlay(val) {
+      if (this.$refs.audio) {
+        if (val === false) {
+          this.$refs.audio.play();
+        } else {
+          this.$refs.audio.pause();
+        }
+      }
+    },
+    // immediate: true,
+    // deep: true,
+  },
   methods: {
     changePlayStatus() {
       if (this.playList[this.playIndex].id !== 0) {
         if (this.isPlay === true) {
           this.$store.commit('setIsPlay', false);
-          this.$refs.audio.play();
         } else {
           this.$store.commit('setIsPlay', true);
-          this.$refs.audio.pause();
         }
       }
     },
     playNext() {
       this.$store.commit('setPlayIndex', this.playIndex + 1);
+    },
+    showDetailPage() {
+      // 判断是否选择了歌曲
+      if (this.playList[0].id !== 0) {
+        this.$store.commit('setDetailPageShow', true);
+      }
     },
   },
 };

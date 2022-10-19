@@ -5,16 +5,19 @@
   </div>
 </template>
 <script>
-import ItemTop from '../components/item/ItemTop.vue';
-import ItemMusicTop from '../components/item/ItemMusicTop.vue';
-import ItemMusic from '../components/item/ItemMusic.vue';
+import ItemTop from '@/components/item/ItemTop.vue';
+import ItemMusicTop from '@/components/item/ItemMusicTop.vue';
+import ItemMusic from '@/components/item/ItemMusic.vue';
+
 import { useRoute } from 'vue-router';
 import { reactive, onMounted } from 'vue';
+import { useStore } from 'vuex';
 import itemApi from '@/api/item.js';
 
 export default {
   components: { ItemTop, ItemMusicTop, ItemMusic },
   setup() {
+    const store = useStore();
     const data = reactive({
       playList: {},
       detailList: {},

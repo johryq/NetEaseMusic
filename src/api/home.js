@@ -18,4 +18,4 @@ async function reqPlayList() {
   }
 }
 
-export default { reqBanner,reqPlayList };
+export default { reqBanner, reqPlayList };

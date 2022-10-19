@@ -9,6 +9,7 @@ export default createStore({
     ],
     playIndex: 0,
     isPlay: true,
+    detailPageShow: false,
   },
   mutations: {
     setPlayList(state, playList) {
@@ -20,8 +21,13 @@ export default createStore({
     setPlayIndex(state, index) {
       if (index > state.playList.length - 1) {
         index = 0;
+      } else if (index < 0) {
+        index = state.playList.length - 1;
       }
       state.playIndex = index;
+    },
+    setDetailPageShow(state, boolval) {
+      state.detailPageShow = boolval;
     },
   },
   actions: {},

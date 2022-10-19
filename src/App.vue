@@ -2,12 +2,23 @@
   <div id="app">
     <RouterView></RouterView>
     <FooterPlay></FooterPlay>
+    <van-popup v-model:show="detailShow" position="bottom" :style="{ width: '100%', height: '100%' }">
+      <MusicDetail></MusicDetail>
+    </van-popup>
   </div>
 </template>
 <script>
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+import MusicDetail from '@/components/item/MusicDetail.vue';
 import FooterPlay from '@/components/play/FooterPlay.vue';
+
 export default {
-  components: { FooterPlay },
+  components: { FooterPlay, MusicDetail },
+  setup() {
+    const store = useStore();
+    return { detailShow: computed(() => store.state.detailPageShow) };
+  },
 };
 </script>
 <style lang="less">

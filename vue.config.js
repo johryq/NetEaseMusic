@@ -3,8 +3,17 @@ const ComponentsPlugin = require('unplugin-vue-components/webpack');
 
 module.exports = {
   devServer: {
-    proxy: 'http://cloud-music.pl-fe.cn/',
-    changeOrigin: true,
+    disableHostCheck: true,
+    // proxy: 'http://cloud-music.pl-fe.cn/',
+    proxy: {
+      '/api': {
+        target: 'http://cloud-music.pl-fe.cn/',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': '/',
+        },
+      },
+    },
   },
   configureWebpack: {
     plugins: [

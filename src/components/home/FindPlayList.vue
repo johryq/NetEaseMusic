@@ -33,7 +33,6 @@
 <script>
 import { onMounted, reactive } from 'vue';
 import homeApi from '@/api/home';
-import path from 'path';
 
 export default {
   setup() {
@@ -56,7 +55,7 @@ export default {
           for (let index = 0; index < val.length; index += 3) {
             data.playList.push(val.slice(index, index + 3));
           }
-          console.log(data.playList);
+          console.log({ playList: data.playList });
         });
       }
     });
