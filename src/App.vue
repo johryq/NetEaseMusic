@@ -5,19 +5,26 @@
     <van-popup v-model:show="detailShow" position="bottom" :style="{ width: '100%', height: '100%' }">
       <MusicDetail></MusicDetail>
     </van-popup>
+    <van-popup class="appPlayList" v-model:show="playListShow" :style="{ height: '100%' }" position="bottom">
+      <MusicList></MusicList>
+    </van-popup>
   </div>
 </template>
 <script>
 import { computed } from 'vue';
 import { useStore } from 'vuex';
-import MusicDetail from '@/components/item/MusicDetail.vue';
+import MusicDetail from '@/components/play/MusicDetail.vue';
 import FooterPlay from '@/components/play/FooterPlay.vue';
+import MusicList from '@/components/play/MusicList.vue';
 
 export default {
-  components: { FooterPlay, MusicDetail },
+  components: { FooterPlay, MusicDetail, MusicList },
   setup() {
     const store = useStore();
-    return { detailShow: computed(() => store.state.detailPageShow) };
+    return {
+      detailShow: computed(() => store.state.detailPageShow),
+      playListShow: computed(() => store.state.showPlayList),
+    };
   },
 };
 </script>
@@ -42,6 +49,9 @@ a {
   text-overflow: ellipsis;
   white-space: nowrap;
   line-clamp: 1;
+}
+.appPlayList {
+  background: none;
 }
 .show-2row-text {
   text-overflow: -o-ellipsis-lastline;

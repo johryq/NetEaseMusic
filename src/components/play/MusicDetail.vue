@@ -1,23 +1,11 @@
 <template>
   <div class="music-detail">
-    <img
-      class="bg"
-      :src="data.song !== null ? data.song.al.picUrl : '@/assets/disc_default.png'"
-      alt=""
-    />
+    <img class="bg" :src="data.song !== null ? data.song.al.picUrl : '@/assets/disc_default.png'" alt="" />
     <div class="bg-top-box">
-      <img
-        class="bg-top"
-        :src="data.song !== null ? data.song.al.picUrl : '@/assets/disc_default.png'"
-        alt=""
-      />
+      <img class="bg-top" :src="data.song !== null ? data.song.al.picUrl : '@/assets/disc_default.png'" alt="" />
     </div>
     <div class="bg-bottom-box">
-      <img
-        class="bg-bottom"
-        :src="data.song !== null ? data.song.al.picUrl : '@/assets/disc_default.png'"
-        alt=""
-      />
+      <img class="bg-bottom" :src="data.song !== null ? data.song.al.picUrl : '@/assets/disc_default.png'" alt="" />
     </div>
     <div class="md-head">
       <div class="mdh-con clear-both">
@@ -51,11 +39,7 @@
           <p
             v-for="(val, index) in data.lyricinfo"
             :class="{
-              'p-active':
-                data.lyricTime.currentTime >= val.time.currentTime &&
-                data.lyricTime.currentTime <= val.time.nextTime
-                  ? true
-                  : false,
+              'p-active': data.lyricTime.currentTime >= val.time.currentTime && data.lyricTime.currentTime <= val.time.nextTime ? true : false,
             }"
             :key="index"
           >
@@ -67,12 +51,7 @@
         <div @click="showLyric" class="mdc-imges">
           <img class="img-disc" src="@/assets/disc.png" alt="" />
           <img class="img-needle" src="@/assets/needle-ab.png" :class="data.needleStyle" alt="" />
-          <img
-            class="img-mc"
-            :class="data.rotateStyle"
-            :src="data.song !== null ? data.song.al.picUrl : '@/assets/disc_default.png'"
-            alt=""
-          />
+          <img class="img-mc" :class="data.rotateStyle" :src="data.song !== null ? data.song.al.picUrl : '@/assets/disc_default.png'" alt="" />
         </div>
         <div class="mf-icon-list">
           <div class="icon-like">
@@ -105,13 +84,7 @@
     </div>
     <div class="md-footer">
       <div class="mf-play-line">
-        <van-slider
-          v-model="barValue"
-          :max="data.lyricTime.totleTime"
-          :min="0"
-          active-color="#ee0a24"
-          @change="changeBar"
-        >
+        <van-slider v-model="barValue" :max="data.lyricTime.totleTime" :min="0" active-color="#ee0a24" @change="changeBar">
           <template #button>
             <div class="custom-button">.</div>
           </template>
@@ -164,6 +137,7 @@ export default {
     const data = reactive({
       // 该值为true 不执行歌词滚动
       scrollLyricBool: false,
+      playList: computed(() => store.state.playList),
       playIndex: computed(() => store.state.playIndex),
       lyricTime: computed(() => store.state.lyricTime),
       song: null,
@@ -263,6 +237,14 @@ export default {
         }
       },
       { immediate: true, deep: true },
+    );
+    watch(
+      () => data.playList,
+      (val) => {
+        if (val.length === 0) {
+          data.song = null;
+        }
+      },
     );
     watch(
       () => data.lyricTime.currentTime,

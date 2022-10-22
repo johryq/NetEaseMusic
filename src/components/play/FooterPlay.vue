@@ -21,11 +21,7 @@
             {{ playList[playIndex].id !== 0 ? playList[playIndex].name : '未知歌曲' }}
           </div>
 
-          <div class="fpi-auther show-1row-text">
-            &nbsp;-&nbsp;{{
-              playList[playIndex].id !== 0 ? playList[playIndex].ar[0].name : '未知作家'
-            }}
-          </div>
+          <div class="fpi-auther show-1row-text">&nbsp;-&nbsp;{{ playList[playIndex].id !== 0 ? playList[playIndex].ar[0].name : '未知作家' }}</div>
         </div>
       </div>
       <div class="fp-icon">
@@ -39,7 +35,7 @@
             </svg>
           </div>
         </div>
-        <div class="fpi-list">
+        <div @click="showPlayList" class="fpi-list">
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-liebiao"></use>
           </svg>
@@ -50,11 +46,7 @@
         :autoplay="!isPlay"
         preload="auto"
         ref="audio"
-        :src="
-          playList[playIndex].id !== 0
-            ? `https://music.163.com/song/media/outer/url?id=${playList[playIndex].id}.mp3`
-            : ''
-        "
+        :src="playList[playIndex].id !== 0 ? `https://music.163.com/song/media/outer/url?id=${playList[playIndex].id}.mp3` : ''"
       ></audio>
       <!-- <audio ref="audio" controls src="https://music.163.com/song/media/outer/url?id=1868206871.mp3"></audio> -->
       <!-- <audio controls ref="audio" src="https://hwaphon.github.io/HTML5MusicPlayer/raw/fly.ogg"></audio> -->
@@ -70,7 +62,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['playList', 'playIndex', 'isPlay', 'detailPageShow', 'lyricTime']),
+    ...mapState(['playList', 'playIndex', 'isPlay', 'detailPageShow', 'lyricTime', 'loopState']),
   },
   watch: {
     isPlay: {
@@ -89,9 +81,11 @@ export default {
       immediate: true,
     },
     playIndex: {
-      handler() {
-        this.$store.dispatch('getLyric', this.playList[this.playIndex].id);
-        this.setTotleTime();
+      handler(newVal, oldVal) {
+        if (newVal !== oldVal) {
+          this.$store.dispatch('getLyric', this.playList[this.playIndex].id);
+          this.setTotleTime();
+        }
       },
     },
     'lyricTime.changeTime': {
@@ -113,7 +107,10 @@ export default {
       }
     },
     playNext() {
-      this.$store.commit('setPlayIndex', this.playIndex + 1);
+      if (this.loopState !== true) {
+        this.$store.commit('setPlayIndex', this.playIndex + 1);
+      } else {
+      }
     },
     showDetailPage() {
       // 判断是否选择了歌曲
@@ -121,6 +118,9 @@ export default {
         this.$store.commit('setPlayIndex', this.playIndex);
         this.$store.commit('setDetailPageShow', true);
       }
+    },
+    showPlayList() {
+      this.$store.commit('setShowPlayList', true);
     },
     // 定时器获取并设置播放时间
     setTimeInterval() {

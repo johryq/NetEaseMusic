@@ -8,8 +8,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
-import homeApi from '@/api/home.js';
 import Swipe from '@/components/home/Swipe';
 import TopNav from '@/components/home/TopNav';
 import IconNav from '@/components/home/IconNav';
