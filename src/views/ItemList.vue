@@ -1,11 +1,14 @@
 <template>
   <div class="item-list">
     <ItemMusicTop :playlist="data.playList"></ItemMusicTop>
-    <ItemMusic :detaillist="data.detailList" :trackcount="data.playList.trackCount" :subscribedcount="data.playList.subscribedCount"></ItemMusic>
+    <ItemMusic
+      :detaillist="data.detailList"
+      :trackcount="data.playList.trackCount"
+      :subscribedcount="data.playList.subscribedCount"
+    ></ItemMusic>
   </div>
 </template>
 <script>
-import ItemTop from '@/components/item/ItemTop.vue';
 import ItemMusicTop from '@/components/item/ItemMusicTop.vue';
 import ItemMusic from '@/components/item/ItemMusic.vue';
 
@@ -15,7 +18,7 @@ import { useStore } from 'vuex';
 import itemApi from '@/api/item.js';
 
 export default {
-  components: { ItemTop, ItemMusicTop, ItemMusic },
+  components: { ItemMusicTop, ItemMusic },
   setup() {
     const store = useStore();
     const data = reactive({

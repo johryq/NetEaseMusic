@@ -15,7 +15,7 @@
         <li><a href="javascript:;">视频</a></li>
       </ul>
     </div>
-    <div class="top-right">
+    <div @click="$router.push('/search')" class="top-right">
       <a href="javascript:;">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-search"></use>

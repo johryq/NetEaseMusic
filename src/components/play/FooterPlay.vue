@@ -17,11 +17,11 @@
           </svg>
         </div>
         <div class="fp-info">
-          <div class="fpi-name">
+          <div class="fpi-name show-1row-text">
             {{ playList[playIndex].id !== 0 ? playList[playIndex].name : '未知歌曲' }}
           </div>
 
-          <div class="fpi-auther">
+          <div class="fpi-auther show-1row-text">
             &nbsp;-&nbsp;{{
               playList[playIndex].id !== 0 ? playList[playIndex].ar[0].name : '未知作家'
             }}
@@ -47,7 +47,8 @@
       </div>
       <audio
         @ended="playNext"
-        autoplay
+        :autoplay="!isPlay"
+        preload="auto"
         ref="audio"
         :src="
           playList[playIndex].id !== 0
@@ -64,23 +65,42 @@
 import { mapState } from 'vuex';
 export default {
   data() {
-    return {};
+    return {
+      timer: null,
+    };
   },
   computed: {
-    ...mapState(['playList', 'playIndex', 'isPlay', 'detailPageShow']),
+    ...mapState(['playList', 'playIndex', 'isPlay', 'detailPageShow', 'lyricTime']),
   },
   watch: {
-    isPlay(val) {
-      if (this.$refs.audio) {
-        if (val === false) {
-          this.$refs.audio.play();
-        } else {
-          this.$refs.audio.pause();
+    isPlay: {
+      handler(val) {
+        if (this.$refs.audio) {
+          if (val === false) {
+            this.$refs.audio.play();
+            this.setTimeInterval();
+          } else {
+            this.$refs.audio.pause();
+            this.clearTimeInterval();
+          }
         }
-      }
+      },
+      deep: true,
+      immediate: true,
     },
-    // immediate: true,
-    // deep: true,
+    playIndex: {
+      handler() {
+        this.$store.dispatch('getLyric', this.playList[this.playIndex].id);
+        this.setTotleTime();
+      },
+    },
+    'lyricTime.changeTime': {
+      handler(val) {
+        if (val !== 0) {
+          this.$refs.audio.currentTime = val / 1000;
+        }
+      },
+    },
   },
   methods: {
     changePlayStatus() {
@@ -98,7 +118,36 @@ export default {
     showDetailPage() {
       // 判断是否选择了歌曲
       if (this.playList[0].id !== 0) {
+        this.$store.commit('setPlayIndex', this.playIndex);
         this.$store.commit('setDetailPageShow', true);
+      }
+    },
+    // 定时器获取并设置播放时间
+    setTimeInterval() {
+      // 先清除再设置
+      if (this.timer === null) {
+        try {
+          this.timer = window.setInterval(() => {
+            this.$store.commit('setMusicCurrentTime', this.$refs.audio.currentTime * 1000);
+            console.log({ audio: this.$refs.audio, ttt: this.$refs.audio.duration });
+            if (this.lyricTime.totleTime === 0) {
+              this.setTotleTime();
+            }
+          }, 1000);
+        } catch (error) {
+          console.log({ timerError: error });
+        }
+      }
+    },
+    clearTimeInterval() {
+      window.clearInterval(this.timer);
+      this.timer = null;
+    },
+    setTotleTime() {
+      // 首次获取为NaN ，在定时器中获取
+      if (this.$refs.audio && !isNaN(this.$refs.audio.duration)) {
+        console.log({ settotle: this.$refs.audio.duration });
+        this.$store.commit('setMusicTotleTime', this.$refs.audio.duration * 1000);
       }
     },
   },

@@ -2,7 +2,7 @@ import myAxios from './axios';
 
 async function reqItemList(id) {
   try {
-    let res = myAxios.get(`/playlist/detail?id=${id}`);
+    let res = await myAxios.get(`/playlist/detail?id=${id}`);
     return res;
   } catch (error) {
     return null;
@@ -11,7 +11,7 @@ async function reqItemList(id) {
 
 async function reqItemDetailList(id, limit = 20, offset = 0) {
   try {
-    let res = myAxios.get(`/playlist/track/all?id=${id}&limit=${limit}&offset=${offset}`);
+    let res = await myAxios.get(`/playlist/track/all?id=${id}&limit=${limit}&offset=${offset}`);
     return res;
   } catch (error) {
     return null;
@@ -31,4 +31,14 @@ async function reqMusicMp3(id, level = 'exhigh') {
   }
 }
 
-export default { reqItemList, reqItemDetailList, reqMusicMp3 };
+// /lyric?id=
+async function reqMusicLyric(id) {
+  try {
+    let res = await myAxios.get(`/lyric?id=${id}`);
+    return res;
+  } catch (error) {
+    return null;
+  }
+}
+
+export default { reqItemList, reqItemDetailList, reqMusicMp3, reqMusicLyric };

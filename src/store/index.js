@@ -1,4 +1,5 @@
 import { createStore } from 'vuex';
+import itemApi from '@/api/item.js';
 
 export default createStore({
   state: {
@@ -10,6 +11,14 @@ export default createStore({
     playIndex: 0,
     isPlay: true,
     detailPageShow: false,
+    detailPageLyric: true,
+    lyric: {},
+    lyricTime: {
+      currentTime: 0,
+      totleTime: 0,
+      changeTime: 0,
+      emptyTime: 0,
+    },
   },
   mutations: {
     setPlayList(state, playList) {
@@ -29,7 +38,29 @@ export default createStore({
     setDetailPageShow(state, boolval) {
       state.detailPageShow = boolval;
     },
+    setLyricShow(state, boolval) {
+      state.detailPageLyric = boolval;
+    },
+    setMusicCurrentTime(state, time) {
+      state.lyricTime.currentTime = time;
+    },
+    setMusicTotleTime(state, time) {
+      // audio音频长度和播放长度不同·
+      // if (state.lyricTime.emptyTime > state.lyricTime.totleTime) {
+      state.lyricTime.totleTime = time;
+    },
+    setChangeTime(state, time) {
+      state.lyricTime.changeTime = time;
+    },
+    setEmptyTime(state, time) {
+      state.lyricTime.emptyTime = time;
+    },
   },
-  actions: {},
+  actions: {
+    getLyric: async function (context, id) {
+      let res = await itemApi.reqMusicLyric(id);
+      context.state.lyric = res.data.lrc.lyric;
+    },
+  },
   modules: {},
 });

@@ -32,10 +32,12 @@
             </div>
           </div>
           <div class="ii-text-box">
-            <h4 class="show-2row-text">{{ playlist.name }}</h4>
+            <div class="it-name-box show-2row-text">
+              {{ playlist.name }}
+            </div>
             <div class="it-auther-box">
               <img :src="playlist.coverImgUrl + '?param=200y200'" alt="" />
-              <a class="show-1row-text" href="javascript:;">{{ playlist.creator.nickname }}</a>
+              <div class="it-nickname show-1row-text">{{ playlist.creator.nickname }}</div>
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-xiangyoujiantou"></use>
               </svg>
@@ -190,15 +192,27 @@ export default {
         }
       }
       .ii-text-box {
-        width: 100%;
-        padding: 0.1rem 0 0 0.2rem;
+        display: flex;
+        flex-direction: column;
+        padding: 0.1rem 0.2rem 0 0.2rem;
+        width: 60%;
+        .it-name-box {
+          height: 0.9rem;
+        }
         .it-auther-box {
+          display: flex;
+          align-items: center;
+          width: 100%;
+          margin: 0.1rem 0;
           img {
-            margin: 0.2rem;
             height: 0.5rem;
             height: 0.5rem;
+            margin-right: 0.2rem;
             border-radius: 0.25rem;
             vertical-align: middle;
+          }
+          .it-nickname {
+            width: 70%;
           }
           .icon {
             width: 0.2rem;
@@ -212,7 +226,9 @@ export default {
         .it-info-box {
           width: 90%;
           font-size: 0.24rem;
-          margin-top: 0.4rem;
+          margin-top: 0.2rem;
+          -webkit-line-clamp: 3;
+
           .icon {
             width: 0.2rem;
             height: 0.2rem;
