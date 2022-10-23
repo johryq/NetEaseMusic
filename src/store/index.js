@@ -5,7 +5,7 @@ export default createStore({
   state: {
     playList: [{ id: 0 }],
     playIndex: 0,
-    lyric: {},
+    lyric: null,
     lyricTime: {
       currentTime: 0,
       totleTime: 0,
@@ -25,7 +25,15 @@ export default createStore({
     setRemoveList(state, index) {
       state.playList = state.playList.filter((v, i) => i !== index);
     },
+    setAddSearSong(state, song) {
+      if (state.playList[0].id === 0) {
+        state.playList = [song];
+      } else {
+        state.playList.push(song);
+      }
+    },
     setDelAllList(state) {
+      state.detailPageShow = false;
       state.playList = [{ id: 0 }];
       state.playIndex = 0;
       state.isPlay = true;
@@ -74,7 +82,9 @@ export default createStore({
   actions: {
     getLyric: async function (context, id) {
       let res = await itemApi.reqMusicLyric(id);
-      context.state.lyric = res.data.lrc.lyric;
+      if (res.status === 200) {
+        context.state.lyric = res.data.lrc.lyric;
+      }
     },
   },
   modules: {},

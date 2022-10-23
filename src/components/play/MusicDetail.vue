@@ -84,16 +84,25 @@
     </div>
     <div class="md-footer">
       <div class="mf-play-line">
-        <van-slider v-model="barValue" :max="data.lyricTime.totleTime" :min="0" active-color="#ee0a24" @change="changeBar">
+        <van-slider
+          v-model="barValue"
+          :max="data.lyricTime.totleTime === 0 ? 100 : data.lyricTime.totleTime"
+          :min="0"
+          active-color="#ee0a24"
+          @change="changeBar"
+        >
           <template #button>
-            <div class="custom-button">.</div>
+            <div class="custom-button"></div>
           </template>
         </van-slider>
       </div>
       <div class="mf-icon-play">
-        <div class="icon-cyclic">
-          <svg class="icon" aria-hidden="true">
+        <div @click="changeLoop" class="icon-cyclic">
+          <svg v-if="!data.loopState" class="icon" aria-hidden="true">
             <use xlink:href="#icon-xunhuanbofang"></use>
+          </svg>
+          <svg v-else class="icon" aria-hidden="true">
+            <use xlink:href="#icon-danquxunhuan"></use>
           </svg>
         </div>
         <div @click="preIndex" class="icon-pre">
@@ -114,7 +123,7 @@
             <use xlink:href="#icon-play-next-"></use>
           </svg>
         </div>
-        <div class="icon-list">
+        <div @click="showPlayList" class="icon-list">
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-menu"></use>
           </svg>
@@ -137,6 +146,7 @@ export default {
     const data = reactive({
       // 该值为true 不执行歌词滚动
       scrollLyricBool: false,
+      loopState: computed(() => store.state.loopState),
       playList: computed(() => store.state.playList),
       playIndex: computed(() => store.state.playIndex),
       lyricTime: computed(() => store.state.lyricTime),
@@ -155,7 +165,7 @@ export default {
       lyricinfo: computed(() => {
         let lyricArray;
         let lastTime = 0;
-        if (data.lyric[0]) {
+        if (data.lyric !== null) {
           lyricArray = data.lyric.split(/[(\r\n)\r\n]+/).map((item, index, ary) => {
             let min = item.slice(1, 3);
             let sec = item.slice(4, 6);
@@ -191,7 +201,9 @@ export default {
         return lyricArray;
       }),
     });
-
+    function showPlayList() {
+      store.commit('setShowPlayList', true);
+    }
     function closeThis() {
       store.commit('setDetailPageShow', false);
     }
@@ -200,6 +212,7 @@ export default {
       store.commit('setIsPlay', !data.isPlay);
     }
     function changeBar() {
+      scrollLyric();
       store.commit('setChangeTime', barValue.value);
     }
     function preIndex() {
@@ -211,7 +224,7 @@ export default {
       store.commit('setIsPlay', false);
     }
     function showLyric() {
-      if (data.lyric === null) {
+      if (data.lyric === null && data.playList[0].id !== 0) {
         store.dispatch('getLyric', data.playList[data.playIndex].id);
       }
       store.commit('setLyricShow', !data.showLyric);
@@ -229,6 +242,9 @@ export default {
         } catch (error) {}
       }
     }
+    function changeLoop() {
+      store.commit('setLoopState');
+    }
     watch(
       () => data.showPage,
       (val) => {
@@ -241,7 +257,7 @@ export default {
     watch(
       () => data.playList,
       (val) => {
-        if (val.length === 0) {
+        if (val[0].id === 0) {
           data.song = null;
         }
       },
@@ -268,6 +284,8 @@ export default {
       nextIndex,
       showLyric,
       changeBar,
+      showPlayList,
+      changeLoop,
     };
   },
 };
@@ -440,13 +458,10 @@ export default {
     .mf-play-line {
       // height: 0.2rem;
       .custom-button {
-        width: 26px;
-        color: #fff;
-        font-size: 10px;
-        line-height: 18px;
-        text-align: center;
+        width: 0.24rem;
+        height: 0.24rem;
         background-color: #ee0a24;
-        border-radius: 100px;
+        border-radius: 0.24rem;
       }
     }
   }

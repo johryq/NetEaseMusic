@@ -1,11 +1,7 @@
 <template>
   <div class="item-list">
     <ItemMusicTop :playlist="data.playList"></ItemMusicTop>
-    <ItemMusic
-      :detaillist="data.detailList"
-      :trackcount="data.playList.trackCount"
-      :subscribedcount="data.playList.subscribedCount"
-    ></ItemMusic>
+    <ItemMusic :detaillist="data.detailList" :trackcount="data.playList.trackCount" :subscribedcount="data.playList.subscribedCount"></ItemMusic>
   </div>
 </template>
 <script>
@@ -20,7 +16,6 @@ import itemApi from '@/api/item.js';
 export default {
   components: { ItemMusicTop, ItemMusic },
   setup() {
-    const store = useStore();
     const data = reactive({
       playList: {},
       detailList: {},

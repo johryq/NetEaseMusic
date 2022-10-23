@@ -31,7 +31,7 @@
               <use xlink:href="#icon-play1"></use>
             </svg>
             <svg v-else class="icon" aria-hidden="true">
-              <use xlink:href="#icon-zanting"></use>
+              <use xlink:href="#icon-zanting-copy"></use>
             </svg>
           </div>
         </div>
@@ -44,6 +44,7 @@
       <audio
         @ended="playNext"
         :autoplay="!isPlay"
+        :loop="loopState"
         preload="auto"
         ref="audio"
         :src="playList[playIndex].id !== 0 ? `https://music.163.com/song/media/outer/url?id=${playList[playIndex].id}.mp3` : ''"
@@ -62,7 +63,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['playList', 'playIndex', 'isPlay', 'detailPageShow', 'lyricTime', 'loopState']),
+    ...mapState(['playList', 'playIndex', 'isPlay', 'detailPageShow', 'lyricTime', 'loopState', 'loopState']),
   },
   watch: {
     isPlay: {
@@ -107,9 +108,14 @@ export default {
       }
     },
     playNext() {
+      // 循环播放以及播放结束
       if (this.loopState !== true) {
         this.$store.commit('setPlayIndex', this.playIndex + 1);
       } else {
+        // this.$refs.audio.currentTime = 0;
+        this.$store.commit('setMusicCurrentTime', 0);
+        // this.$refs.audio.play();
+        this.setTimeInterval();
       }
     },
     showDetailPage() {
@@ -117,6 +123,7 @@ export default {
       if (this.playList[0].id !== 0) {
         this.$store.commit('setPlayIndex', this.playIndex);
         this.$store.commit('setDetailPageShow', true);
+        this.$store.dispatch('getLyric', this.playList[this.playIndex].id);
       }
     },
     showPlayList() {
@@ -130,7 +137,7 @@ export default {
           this.timer = window.setInterval(() => {
             this.$store.commit('setMusicCurrentTime', this.$refs.audio.currentTime * 1000);
             console.log({ audio: this.$refs.audio, ttt: this.$refs.audio.duration });
-            if (this.lyricTime.totleTime === 0) {
+            if (this.lyricTime.totleTime === 0 && this.$refs.audio.duration !== this.lyricTime.totleTime) {
               this.setTotleTime();
             }
           }, 1000);

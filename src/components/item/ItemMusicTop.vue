@@ -9,7 +9,7 @@
         <span><h3>歌单</h3></span>
       </div>
       <div class="it-right">
-        <svg class="icon" aria-hidden="true">
+        <svg @click="$router.push('/search')" class="icon" aria-hidden="true">
           <use xlink:href="#icon-search"></use>
         </svg>
         <svg class="icon" aria-hidden="true">
@@ -195,7 +195,7 @@ export default {
         display: flex;
         flex-direction: column;
         padding: 0.1rem 0.2rem 0 0.2rem;
-        width: 60%;
+        width: 80%;
         .it-name-box {
           height: 0.9rem;
         }
@@ -212,7 +212,7 @@ export default {
             vertical-align: middle;
           }
           .it-nickname {
-            width: 70%;
+            width: 90%;
           }
           .icon {
             width: 0.2rem;
@@ -224,7 +224,7 @@ export default {
           }
         }
         .it-info-box {
-          width: 90%;
+          width: 100%;
           font-size: 0.24rem;
           margin-top: 0.2rem;
           -webkit-line-clamp: 3;
@@ -241,7 +241,7 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.2rem 0;
+      padding-top: 0.3rem;
       .icon-box {
         display: flex;
         flex-direction: column;

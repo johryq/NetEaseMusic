@@ -68,6 +68,7 @@ export default {
 .find-play-list {
   width: 100%;
   padding: 0.1rem;
+  padding-bottom: 1rem;
   .play-head {
     height: 0.6rem;
     text-align: 0.6rem;
@@ -88,16 +89,15 @@ export default {
   }
   .play-list {
     ul {
+      display: flex;
+      justify-content: space-between;
       width: 100%;
-      margin: 0 auto;
-      background-color: #bcbcbc;
       li {
-        float: left;
-        width: 2.36rem;
-        height: 3.4rem;
+        width: 33.3%;
         overflow: hidden;
         margin-right: 0.1rem;
         margin-bottom: 0.2rem;
+        padding-bottom: 0.2rem;
         .play-box {
           display: flex;
           flex-direction: column;
@@ -105,14 +105,13 @@ export default {
           width: 100%;
           height: 100%;
           .pb-img {
-            background-color: #000;
-
             position: relative;
             width: 100%;
-            height: 2.3rem;
+            height: 100%;
             border-radius: 0.1rem;
             overflow: hidden;
             & > img {
+              object-fit: cover;
               width: 100%;
               height: 100%;
             }
@@ -132,7 +131,7 @@ export default {
           .pb-tit {
             margin-top: 0.1rem;
             width: 90%;
-            height: 0.8rem;
+            height: 1.1rem;
           }
         }
       }

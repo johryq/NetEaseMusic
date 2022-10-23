@@ -19,21 +19,10 @@
     </div>
     <div class="music-box">
       <div class="mb-con">
-        <div
-          @click="changePlayIndex(index)"
-          v-for="(music, index) in detaillist.songs"
-          :key="index"
-          class="mb-row"
-        >
+        <div @click="changePlayIndex(index)" v-for="(music, index) in detaillist.songs" :key="index" class="mb-row">
           <div class="mb-id text-con">{{ index + 1 }}</div>
           <div class="mb-info">
-            <div
-              :class="[
-                'text-con',
-                'show-1row-text',
-                { 'text-notplay': music.fee === 1 || music.fee === 0 ? true : false },
-              ]"
-            >
+            <div :class="['text-con', 'show-1row-text', { 'text-notplay': music.fee === 1 || music.fee === 0 ? true : false }]">
               {{ music.name }}
             </div>
             <div class="text-alert show-1row-text">{{ music.ar[0].name }}</div>
@@ -74,10 +63,7 @@ export default {
     }
     // 切换歌曲
     function changePlayIndex(index) {
-      if (
-        store.state.playList[0].id === 0 ||
-        store.state.playList[0].id !== props.detaillist.songs[0].id
-      ) {
+      if (store.state.playList[0].id === 0 || store.state.playList[0].id !== props.detaillist.songs[0].id) {
         store.commit('setPlayList', props.detaillist.songs);
         console.log({ isfree: store.state.playList[index].fee });
       }
@@ -147,6 +133,7 @@ export default {
     background: #fff;
     .mb-con {
       margin: 0 0.2rem;
+      margin-bottom: 1rem;
       .mb-row {
         display: flex;
         align-items: center;

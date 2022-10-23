@@ -2,7 +2,7 @@
   <div class="swipe">
     <van-swipe :autoplay="0" lazy-render>
       <van-swipe-item v-for="(image, index) in data.images" :key="index">
-        <img :src="image.imageUrl ? image.imageUrl : image" />
+        <img :src="image.imageUrl" />
       </van-swipe-item>
     </van-swipe>
   </div>
@@ -31,7 +31,6 @@ export default {
 <style lang="less" scoped>
 .van-swipe {
   width: 100%;
-  height: 3rem;
   .van-swipe-item {
     padding: 0 0.1rem;
     img {
