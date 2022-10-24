@@ -2,7 +2,8 @@ const { VantResolver } = require('unplugin-vue-components/resolvers');
 const ComponentsPlugin = require('unplugin-vue-components/webpack');
 
 module.exports = {
-  productionSourceMap: false,
+  // productionSourceMap: false,
+  // publicPath: process.env.NODE_ENV === 'production' ? '/production-sub-path/' : '/',
   devServer: {
     disableHostCheck: true,
     // proxy: 'http://cloud-music.pl-fe.cn/',

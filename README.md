@@ -1,23 +1,15 @@
 # net.ease.music_app
 
-## Project setup
+简单的网易云歌单播放器，使用的网易云 node API
 
-```
-npm install
-```
+[NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)
 
-### Compiles and hot-reloads for development
+## 功能&页面
 
-```
-npm run serve
-```
+1. 歌单页面
 
-### Compiles and minifies for production
+2. 播放歌曲详情页
 
-```
-npm run build
-```
+3. 搜索页面
 
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
+4. 播放列表

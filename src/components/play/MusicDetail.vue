@@ -1,11 +1,11 @@
 <template>
   <div class="music-detail">
-    <img class="bg" :src="data.song !== null ? data.song.al.picUrl : '@/assets/disc_default.png'" alt="" />
+    <img class="bg" :src="data.song !== 0 ? data.song.al.picUrl : '@/assets/disc_default.png'" alt="" />
     <div class="bg-top-box">
-      <img class="bg-top" :src="data.song !== null ? data.song.al.picUrl : '@/assets/disc_default.png'" alt="" />
+      <img class="bg-top" :src="data.song !== 0 ? data.song.al.picUrl : '@/assets/disc_default.png'" alt="" />
     </div>
     <div class="bg-bottom-box">
-      <img class="bg-bottom" :src="data.song !== null ? data.song.al.picUrl : '@/assets/disc_default.png'" alt="" />
+      <img class="bg-bottom" :src="data.song !== 0 ? data.song.al.picUrl : '@/assets/disc_default.png'" alt="" />
     </div>
     <div class="md-head">
       <div class="mdh-con clear-both">
@@ -17,10 +17,10 @@
           </div>
           <div class="mc-l-info">
             <div class="mc-info-name show-1row-text">
-              {{ data.song !== null ? data.song.name : 'name' }}
+              {{ data.song !== 0 ? data.song.name : 'name' }}
             </div>
             <div class="mc-info-auther">
-              {{ data.song !== null ? data.song.ar[0].name : 'auther' }}
+              {{ data.song !== 0 ? data.song.ar[0].name : 'auther' }}
             </div>
           </div>
         </div>
@@ -51,7 +51,7 @@
         <div @click="showLyric" class="mdc-imges">
           <img class="img-disc" src="@/assets/disc.png" alt="" />
           <img class="img-needle" src="@/assets/needle-ab.png" :class="data.needleStyle" alt="" />
-          <img class="img-mc" :class="data.rotateStyle" :src="data.song !== null ? data.song.al.picUrl : '@/assets/disc_default.png'" alt="" />
+          <img class="img-mc" :class="data.rotateStyle" :src="data.song !== 0 ? data.song.al.picUrl : '@/assets/disc_default.png'" alt="" />
         </div>
         <div class="mf-icon-list">
           <div class="icon-like">
@@ -202,7 +202,8 @@ export default {
       }),
     });
     function showPlayList() {
-      store.commit('setShowPlayList', true);
+      // proxy set error
+      // store.commit('setShowPlayList', true);
     }
     function closeThis() {
       store.commit('setDetailPageShow', false);
@@ -258,7 +259,7 @@ export default {
       () => data.playList,
       (val) => {
         if (val[0].id === 0) {
-          data.song = null;
+          data.song = 0;
         }
       },
     );

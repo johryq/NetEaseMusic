@@ -56,6 +56,8 @@
 </template>
 <script>
 import { mapState } from 'vuex';
+import { Toast } from 'vant';
+import { nextTick } from 'vue';
 export default {
   data() {
     return {
@@ -69,13 +71,16 @@ export default {
     isPlay: {
       handler(val) {
         if (this.$refs.audio) {
-          if (val === false) {
-            this.$refs.audio.play();
-            this.setTimeInterval();
-          } else {
-            this.$refs.audio.pause();
-            this.clearTimeInterval();
-          }
+          // audio未加载执行播放报错！但是不影响播放！
+          nextTick(() => {
+            if (val === false) {
+              this.$refs.audio.play();
+              this.setTimeInterval();
+            } else {
+              this.$refs.audio.pause();
+              this.clearTimeInterval();
+            }
+          });
         }
       },
       deep: true,
@@ -137,8 +142,13 @@ export default {
           this.timer = window.setInterval(() => {
             this.$store.commit('setMusicCurrentTime', this.$refs.audio.currentTime * 1000);
             console.log({ audio: this.$refs.audio, ttt: this.$refs.audio.duration });
-            if (this.lyricTime.totleTime === 0 && this.$refs.audio.duration !== this.lyricTime.totleTime) {
-              this.setTotleTime();
+            // if (this.lyricTime.totleTime === 0 && this.$refs.audio.duration !== this.lyricTime.totleTime) {
+            //   this.setTotleTime();
+            // }
+            // 无法播放歌曲
+            if (isNaN(this.$refs.audio.duration)) {
+              Toast('该歌曲无法播放');
+              this.$store.commit('setIsPlay', true);
             }
           }, 1000);
         } catch (error) {
